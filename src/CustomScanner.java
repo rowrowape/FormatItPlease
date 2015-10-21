@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Created by asus on 14.10.15.
  */
-public class CustomScanner {
+public class CustomScanner implements IScanner {
     private int index = 0;
     private boolean hasNext = true;
     private Scanner scan;

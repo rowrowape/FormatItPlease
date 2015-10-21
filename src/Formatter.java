@@ -1,25 +1,29 @@
-import java.io.FileWriter;
 import java.io.IOException;
 
-public class Main {
+/**
+ * Created by asus on 21.10.15.
+ */
+public class Formatter implements IFormatter {
 
-    private static String tab(int openBrackets, String output) {for (int i = 0; i < openBrackets; i++) {
-            output = "____" + output;} return output;}
+    private static String tab(int openBrackets, String output) {
+        for (int i = 0; i < openBrackets; i++) {
+            output = "    " + output;
+        }
+        return output;
+    }
 
-    public static void main(String[] args) throws IOException {
+    public void format(IScanner scan, IWriter wrt) throws IOException {
         int openBrackets = 0;
-        CustomScanner fscan = new CustomScanner("input.txt");
-        FileWriter wrt = new FileWriter("output.txt");
         char curChar = 0;
         char prevChar = 0;
-        boolean                  isNewLine = false;
-        if (fscan.getHasNext()) {
-            curChar = fscan.getNextChar();
+        boolean isNewLine = false;
+        if (scan.getHasNext()) {
+            curChar = scan.getNextChar();
             wrt.append(curChar);
         }
-        while (fscan.getHasNext()) {
+        while (scan.getHasNext()) {
             prevChar = curChar;
-            curChar = fscan.getNextChar();
+            curChar = scan.getNextChar();
             String output = String.valueOf(curChar);
             switch (curChar) {
                 case '{':
@@ -42,7 +46,12 @@ public class Main {
                     output = output + "\n";
                     isNewLine = true;
                     break;
-                //case '+' : if(prevChar)
+                case ' ' :
+                    if (prevChar == ' ') {
+                        output = "";
+                        break;
+                    }
+                    //case '+' : if (prevChar = ' ')
                 default:
                     if (isNewLine) {
                         output = tab(openBrackets, output);
@@ -56,5 +65,3 @@ public class Main {
         wrt.close();
     }
 }
-
-
