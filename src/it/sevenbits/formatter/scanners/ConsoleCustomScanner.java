@@ -1,27 +1,26 @@
-import java.io.File;
-import java.io.IOException;
+package it.sevenbits.formatter.scanners;
+
 import java.util.Scanner;
 
 /**
- * Created by asus on 14.10.15.
+ * Created by asus on 29.10.15.
  */
-public class CustomScanner implements IScanner {
+public class ConsoleCustomScanner implements IScanner {
     private int index = 0;
     private boolean hasNext = true;
     private Scanner scan;
     private char[] arr;
 
-    CustomScanner(String filePath) throws IOException {
-        File file = new File(filePath);
-        scan = new Scanner(file);
+    public ConsoleCustomScanner() {
+        scan = new Scanner(System.in);
         nextWordArray();
     }
 
-    private void nextWordArray() throws IOException {
+    private void nextWordArray() {
         if (scan.hasNext()) {
             index = 0;
             arr = scan.nextLine().trim().toCharArray();
-            if (arr.length==0){
+            if (arr.length == 0) {
                 nextWordArray();
             }
         } else {
@@ -30,11 +29,11 @@ public class CustomScanner implements IScanner {
     }
 
     public boolean getHasNext() {
-        return hasNext;
+        return scan.hasNext();
     }
 
-    public char getNextChar() throws IOException {
-        if (hasNext) {
+    public char getNextChar() {
+        if (scan.hasNext()) {
             char buf = arr[index];
             index++;
             if (index >= arr.length) {
@@ -45,3 +44,5 @@ public class CustomScanner implements IScanner {
         return (char) 0;
     }
 }
+
+
