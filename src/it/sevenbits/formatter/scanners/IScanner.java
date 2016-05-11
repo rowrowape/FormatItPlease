@@ -9,5 +9,6 @@ import java.io.IOException;
  */
 public interface IScanner {
     public boolean getHasNext();
+
     public char getNextChar() throws InputExceptions;
 }

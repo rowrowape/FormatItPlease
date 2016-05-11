@@ -29,7 +29,7 @@ public class CustomScanner implements IScanner {
         if (scan.hasNext()) {
             index = 0;
             arr = scan.nextLine().trim().toCharArray();
-            if (arr.length==0){
+            if (arr.length == 0) {
                 nextWordArray();
             }
         } else {

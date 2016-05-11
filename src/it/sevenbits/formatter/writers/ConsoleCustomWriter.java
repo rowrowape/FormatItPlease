@@ -9,7 +9,7 @@ import java.io.PrintWriter;
  */
 public class ConsoleCustomWriter implements IWriter {
 
-    ConsoleCustomWriter(){
+    ConsoleCustomWriter() {
 
     }
 

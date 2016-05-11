@@ -26,10 +26,13 @@ public class Main {
         }
 
         IWriter writer = null;
-        try {
-            writer = new CustomWriter(args[1]);
-        } catch (OutputExceptions e) {
-            //TODO:logger
+        if (args[0].equals("console")) {
+        } else {
+            try {
+                writer = new CustomWriter(args[1]);
+            } catch (OutputExceptions e) {
+                //TODO:logger
+            }
         }
 
         IFormatter formatter = new Formatter(scanner, writer);
