@@ -2,11 +2,15 @@ package it.sevenbits.formatter.writers;
 
 import it.sevenbits.formatter.exceptions.OutputExceptions;
 
-
 /**
- * Created by asus on 21.10.15.
+ * Interface class for writers
  */
 public interface IWriter {
+    /**
+     * declaration of writer methods
+     *
+     * @throws OutputExceptions
+     */
     public void flush() throws OutputExceptions;
 
     public void append(String str) throws OutputExceptions;

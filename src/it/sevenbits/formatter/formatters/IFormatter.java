@@ -6,10 +6,14 @@ import it.sevenbits.formatter.exceptions.OutputExceptions;
 import java.io.IOException;
 
 /**
- * Created by asus on 21.10.15.
+ * Interface class for formatter class
  */
 public interface IFormatter {
+    /**
+     * declaration of formatter methods
+     *
+     * @throws InputExceptions
+     * @throws OutputExceptions
+     */
     public void format() throws InputExceptions, OutputExceptions;
-
-
 }

@@ -2,12 +2,16 @@ package it.sevenbits.formatter.scanners;
 
 import it.sevenbits.formatter.exceptions.InputExceptions;
 
-import java.io.IOException;
-
 /**
- * Created by asus on 21.10.15.
+ * Interface class for scanners
  */
 public interface IScanner {
+    /**
+     * declaration of scanner methods
+     *
+     * @return
+     * @throws InputExceptions
+     */
     public boolean getHasNext();
 
     public char getNextChar() throws InputExceptions;

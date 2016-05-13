@@ -5,8 +5,10 @@ import it.sevenbits.formatter.exceptions.OutputExceptions;
 import java.io.PrintWriter;
 
 /**
- * Created by ROW on 12.05.2016.
+ * Writer for console
+ * TODO
  */
+
 public class ConsoleCustomWriter implements IWriter {
 
     ConsoleCustomWriter() {

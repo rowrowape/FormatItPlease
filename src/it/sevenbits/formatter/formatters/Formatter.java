@@ -8,23 +8,20 @@ import it.sevenbits.formatter.writers.IWriter;
 import java.io.IOException;
 
 /**
- * Created by asus on 21.10.15.
+ * Class, that implements method of format code
  */
 public class Formatter implements IFormatter {
     IScanner scanner;
     IWriter writer;
 
     public Formatter(IScanner argScanner, IWriter argWriter) {
+        /**
+         * public constructor with scanner and writer
+         */
         this.scanner = argScanner;
         this.writer = argWriter;
     }
 
-    private String tab(int openBrackets) {
-        for (int i = 0; i < openBrackets; i++) {
-            output = output + "    ";
-        }
-        return output;
-    }
 
     int openBrackets = 0;
     char curChar = 0;
@@ -32,8 +29,13 @@ public class Formatter implements IFormatter {
     boolean isNewLine = false;
     String output = String.valueOf(curChar);
 
-    public void format() throws InputExceptions, OutputExceptions {
 
+    public void format() throws InputExceptions, OutputExceptions {
+        /**
+         *call the handler function and format the code
+         * @throws InputExceptions
+         * @throws OutputExceptions
+         */
         if (scanner.getHasNext()) {
             curChar = scanner.getNextChar();
             writer.append(curChar);
@@ -50,8 +52,7 @@ public class Formatter implements IFormatter {
                 continue;
             }
 
-            openBracketsHandler(curChar);
-
+            openBracketsHandler(curChar, prevChar);
             closeBracketsHandler(curChar);
             semicolonHandler(curChar);
             spaceHandler(prevChar, curChar);
@@ -62,10 +63,30 @@ public class Formatter implements IFormatter {
         writer.close();
     }
 
+    private String tab(int openBrackets) {
+        /**
+         * function will male tabulation of code
+         * @return String
+         */
+        for (int i = 0; i < openBrackets; i++) {
+            output = output + "    ";
+        }
+        return output;
+    }
 
-    private void openBracketsHandler(char curChar) {
+    private void openBracketsHandler(char curChar, char prevChar) {
+        /**
+         * function will format open brackets in code
+         * enter spaces and line breaks
+         * @param curChar incoming arguments
+         * @param prevChar incoming arguments
+         */
+
         if (curChar == '{') {
-            output = ' ' + output + '\n';
+            output = output + '\n';
+            if (prevChar != ' ') {
+                output = ' ' + output;
+            }
             if (isNewLine) {
                 output = tab(openBrackets);
             }
@@ -75,9 +96,14 @@ public class Formatter implements IFormatter {
     }
 
     private void closeBracketsHandler(char curChar) {
+        /**
+         * function will format close brackets in code
+         * enter line breaks
+         * @param curChar incoming arguments
+         */
         if (curChar == '}') {
             openBrackets--;
-            output = '\n' + output;
+            output = output + '\n';
             if (isNewLine) {
                 output = tab(openBrackets);
             }
@@ -87,6 +113,11 @@ public class Formatter implements IFormatter {
     }
 
     private void semicolonHandler(char curChar) {
+        /**
+         * function will format semicolons in code
+         * enter line breaks
+         * @param curChar incoming arguments
+         */
         if (curChar == ';') {
             output = output + '\n';
             isNewLine = true;
@@ -95,6 +126,11 @@ public class Formatter implements IFormatter {
     }
 
     private void spaceHandler(char prevChar, char curChar) {
+        /**
+         * function will format spaces in code
+         * delete excess spaces
+         * @param curChar incoming arguments
+         */
         if (curChar == ' ') {
             if (prevChar == ' ') {
                 if (prevChar == ' ') {
@@ -106,6 +142,11 @@ public class Formatter implements IFormatter {
     }
 
     private void tabulationHandler() {
+        /**
+         * function will format code
+         * entry tabulations
+         * delete excess spaces
+         */
         if (isNewLine) {
             output = tab(openBrackets);
         }
@@ -113,7 +154,12 @@ public class Formatter implements IFormatter {
 
     }
 
+
     private void writeOutput() throws OutputExceptions {
+        /**
+         *write the output after handlers work
+         * @throws OutputExceptions
+         */
         writer.append(output);
         output = "";
         writer.flush();
