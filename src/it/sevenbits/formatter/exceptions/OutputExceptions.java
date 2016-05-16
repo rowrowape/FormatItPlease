@@ -11,6 +11,7 @@ public class OutputExceptions extends Exception {
      * @param error
      */
     public OutputExceptions(String error) {
+
         super(error);
     }
 }

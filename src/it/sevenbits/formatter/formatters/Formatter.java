@@ -1,33 +1,35 @@
 package it.sevenbits.formatter.formatters;
 
+import it.sevenbits.formatter.contexts.Context;
 import it.sevenbits.formatter.exceptions.InputExceptions;
 import it.sevenbits.formatter.exceptions.OutputExceptions;
+import it.sevenbits.formatter.handlers.IHandler;
 import it.sevenbits.formatter.scanners.IScanner;
 import it.sevenbits.formatter.writers.IWriter;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * Class, that implements method of format code
  */
 public class Formatter implements IFormatter {
-    IScanner scanner;
-    IWriter writer;
+    private IScanner scanner;
+    private IWriter writer;
+    private List <IHandler> handlers;
+    private Context context = new Context();
 
-    public Formatter(IScanner argScanner, IWriter argWriter) {
+    public Formatter(IScanner curScanner, IWriter curWriter, List <IHandler> handlers) {
         /**
-         * public constructor with scanner and writer
+         * public constructor with scanner, writer and handlers list
+         *
+         * @param curWriter
+         * @param curScanner
+         * @param handlers
          */
-        this.scanner = argScanner;
-        this.writer = argWriter;
+        this.handlers = handlers;
+        this.scanner = curScanner;
+        this.writer = curWriter;
     }
-
-
-    int openBrackets = 0;
-    char curChar = 0;
-    char prevChar = 0;
-    boolean isNewLine = false;
-    String output = String.valueOf(curChar);
 
 
     public void format() throws InputExceptions, OutputExceptions {
@@ -37,132 +39,36 @@ public class Formatter implements IFormatter {
          * @throws OutputExceptions
          */
         if (scanner.getHasNext()) {
-            curChar = scanner.getNextChar();
-            writer.append(curChar);
+            context.setCurChar(scanner.getNextChar());
+            writer.append(context.getCurChar());
         }
 
         while (scanner.getHasNext()) {
-            prevChar = curChar;
-            curChar = scanner.getNextChar();
-            output = String.valueOf(curChar);
-            if (curChar == ' ' && isNewLine) {
+            context.setCurChar(context.getCurChar());
+            context.setCurChar(scanner.getNextChar());
+            context.setOutput(String.valueOf(context.getCurChar()));
+            if (context.getCurChar() == ' ' && context.isNewLine()) {
                 continue;
             }
-            if (curChar == '\n') {
+            if (context.getCurChar() == '\n') {
                 continue;
             }
-
-            openBracketsHandler(curChar, prevChar);
-            closeBracketsHandler(curChar);
-            semicolonHandler(curChar);
-            spaceHandler(prevChar, curChar);
-            tabulationHandler();
-            writeOutput();
+            for(IHandler handler:handlers) {
+                handler.handle(context);
+            }
+            writer.append(context.getOutput());
+            context.setOutput("");
         }
 
         writer.close();
     }
 
-    private String tab(int openBrackets) {
-        /**
-         * function will male tabulation of code
-         * @return String
-         */
-        for (int i = 0; i < openBrackets; i++) {
-            output = output + "    ";
-        }
-        return output;
-    }
-
-    private void openBracketsHandler(char curChar, char prevChar) {
-        /**
-         * function will format open brackets in code
-         * enter spaces and line breaks
-         * @param curChar incoming arguments
-         * @param prevChar incoming arguments
-         */
-
-        if (curChar == '{') {
-            output = output + '\n';
-            if (prevChar != ' ') {
-                output = ' ' + output;
-            }
-            if (isNewLine) {
-                output = tab(openBrackets);
-            }
-            openBrackets++;
-            isNewLine = true;
-        }
-    }
-
-    private void closeBracketsHandler(char curChar) {
-        /**
-         * function will format close brackets in code
-         * enter line breaks
-         * @param curChar incoming arguments
-         */
-        if (curChar == '}') {
-            openBrackets--;
-            output = output + '\n';
-            if (isNewLine) {
-                output = tab(openBrackets);
-            }
-            isNewLine = true;
-        }
-
-    }
-
-    private void semicolonHandler(char curChar) {
-        /**
-         * function will format semicolons in code
-         * enter line breaks
-         * @param curChar incoming arguments
-         */
-        if (curChar == ';') {
-            output = output + '\n';
-            isNewLine = true;
-        }
-
-    }
-
-    private void spaceHandler(char prevChar, char curChar) {
-        /**
-         * function will format spaces in code
-         * delete excess spaces
-         * @param curChar incoming arguments
-         */
-        if (curChar == ' ') {
-            if (prevChar == ' ') {
-                if (prevChar == ' ') {
-                    output = "";
-                }
-            }
-        }
-
-    }
-
-    private void tabulationHandler() {
-        /**
-         * function will format code
-         * entry tabulations
-         * delete excess spaces
-         */
-        if (isNewLine) {
-            output = tab(openBrackets);
-        }
-        isNewLine = false;
-
-    }
 
 
-    private void writeOutput() throws OutputExceptions {
-        /**
-         *write the output after handlers work
-         * @throws OutputExceptions
-         */
-        writer.append(output);
-        output = "";
-        writer.flush();
 
-    }
+
+
+
+
+
 }

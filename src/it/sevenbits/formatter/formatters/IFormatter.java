@@ -1,5 +1,6 @@
 package it.sevenbits.formatter.formatters;
 
+import it.sevenbits.formatter.contexts.Context;
 import it.sevenbits.formatter.exceptions.InputExceptions;
 import it.sevenbits.formatter.exceptions.OutputExceptions;
 

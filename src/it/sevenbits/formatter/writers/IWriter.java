@@ -11,8 +11,6 @@ public interface IWriter {
      *
      * @throws OutputExceptions
      */
-    public void flush() throws OutputExceptions;
-
     public void append(String str) throws OutputExceptions;
 
     public void close() throws OutputExceptions;

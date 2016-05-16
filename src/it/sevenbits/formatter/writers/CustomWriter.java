@@ -34,18 +34,6 @@ public class CustomWriter implements IWriter {
 
     }
 
-    @Override
-    public void flush() throws OutputExceptions {
-        /**
-         * redefining the standard method flush of FleWriter
-         * @throws OutputExceptions
-         */
-        try {
-            writer.flush();
-        } catch (IOException e) {
-            throw new OutputExceptions(e.getMessage());
-        }
-    }
 
     @Override
     public void append(String str) throws OutputExceptions {
@@ -55,6 +43,7 @@ public class CustomWriter implements IWriter {
          */
         try {
             writer.append(str);
+            writer.flush();
         } catch (IOException e) {
             throw new OutputExceptions(e.getMessage());
         }

@@ -11,25 +11,16 @@ import java.io.PrintWriter;
 
 public class ConsoleCustomWriter implements IWriter {
 
-    ConsoleCustomWriter() {
-
-    }
-
-    public void flush() throws OutputExceptions {
-        return;
-    }
-
     public void append(String str) throws OutputExceptions {
-        return;
+        System.out.print(str);
     }
 
 
     public void close() throws OutputExceptions {
-        return;
     }
 
 
     public void append(char chr) throws OutputExceptions {
-        return;
+        System.out.print(chr);
     }
 }
